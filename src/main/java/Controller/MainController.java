@@ -34,16 +34,12 @@ public class MainController {
 
     @FXML
     private void buttonUpdateAction(ActionEvent e) {
-        if(!editContent.getChildren().isEmpty()) {
-            manualPanel.setDisable(true);
-            progress.setVisible(true);
-            for(Node element : editContent.getChildren()) {
-                FieldValueEditor node = (FieldValueEditor) element;
-                node.update(tableTemplate.getText());
-            }
+
+        if(!isListQueryEmpty()) {
+            inProcessing(true);
+            sendAllQueryToBatch();
             DriverConnection.execute();
-            manualPanel.setDisable(false);
-            progress.setVisible(false);
+            inProcessing(false);
             completDialog();
         }
     }
@@ -68,5 +64,21 @@ public class MainController {
     private void connectionToDatabase() {
         DriverConnection.connect(database.getPath());
         buttonUpdate.setDisable(false);
+    }
+
+    private void inProcessing(boolean inProcessing) {
+        manualPanel.setDisable(inProcessing);
+        progress.setVisible(inProcessing);
+    }
+
+    private void sendAllQueryToBatch() {
+        for(Node element : editContent.getChildren()) {
+            FieldValueEditor node = (FieldValueEditor) element;
+            node.update(tableTemplate.getText());
+        }
+    }
+
+    private boolean isListQueryEmpty() {
+        return editContent.getChildren().isEmpty();
     }
 }
