@@ -57,7 +57,9 @@ public class MainController {
     }
 
     private void openDialogSelectDatabase() {
-        database = new FileChooser().showOpenDialog(menuOpenDatabase.getParentPopup().getScene().getWindow());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database Files", "*.db", "*.sqlite", "*.sqlite3", "*.db3"));
+        database = fileChooser.showOpenDialog(menuOpenDatabase.getParentPopup().getScene().getWindow());
         if(database != null) {
             connectionToDatabase();
         }
