@@ -19,6 +19,7 @@ public class MainController {
     @FXML private Button buttonUpdate;
     @FXML private ScrollPane manualPanel;
     @FXML private ProgressIndicator progress;
+    @FXML private TextField tableTemplate;
     private File database;
 
     @FXML
@@ -38,7 +39,7 @@ public class MainController {
             progress.setVisible(true);
             for(Node element : editContent.getChildren()) {
                 FieldValueEditor node = (FieldValueEditor) element;
-                node.update();
+                node.update(tableTemplate.getText());
             }
             DriverConnection.execute();
             manualPanel.setDisable(false);

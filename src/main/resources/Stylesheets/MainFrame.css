@@ -15,3 +15,7 @@
     -fx-background-repeat: no-repeat;
     -fx-padding: 5px 5px 5px 25px;
 }
+
+#editContent {
+    -fx-padding: 0px 0px 0px 154px;
+}

@@ -15,7 +15,7 @@ public class FieldValueEditor extends FlowPane {
     @FXML private TextField valueField;
     @FXML private VBox editContent;
 
-    public FieldValueEditor(){
+    private FieldValueEditor() {
         super();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/FieldValueEditor.fxml"));
         fxmlLoader.setRoot(this);
@@ -39,7 +39,7 @@ public class FieldValueEditor extends FlowPane {
         editContent.getChildren().remove(this);
     }
 
-    public void update() {
-        DriverConnection.update("test", keyField.getText(), valueField.getText());
+    public void update(String table) {
+        DriverConnection.update(table, keyField.getText(), valueField.getText());
     }
 }
