@@ -1,0 +1,17 @@
+#buttonAdd {
+    -fx-base:green;
+    -fx-background-image: url("../images/Add.png");
+    -fx-background-size: 18px 18px;
+    -fx-background-position: left;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 5px 5px 5px 20px;
+}
+
+#buttonRemove {
+    -fx-base:red;
+    -fx-background-image: url("../images/Remove.png");
+    -fx-background-size: 18px 18px;
+    -fx-background-position: left;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 5px 5px 5px 25px;
+}
