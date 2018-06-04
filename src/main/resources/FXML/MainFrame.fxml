@@ -21,59 +21,54 @@
 <BorderPane prefHeight="480.0" prefWidth="640.0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controller.MainController" stylesheets="/Stylesheets/MainFrame.css">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem text="Open Database" fx:id="menuOpenDatabase" onAction="#openDatabase"/>
-                    </items>
-                </Menu>
-            </menus>
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem text="Open Database" fx:id="menuOpenDatabase" onAction="#openDatabase"/>
+            </Menu>
         </MenuBar>
     </top>
 
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">
-            <tabs>
-                <Tab text="Manual">
-                    <BorderPane>
-                        <center>
-                            <StackPane>
-                                <ScrollPane fitToHeight="true" fitToWidth="true" fx:id="manualPanel">
-                                        <FlowPane alignment="TOP_CENTER">
-                                            <padding>
-                                                <Insets top="5.0" />
-                                            </padding>
-                                            <Group>
-                                                <VBox>
-                                                        <GridPane BorderPane.alignment="CENTER" hgap="5" vgap="5">
-                                                            <children>
-                                                                <Label text="Table" />
-                                                                <Label text="Key" GridPane.columnIndex="1"/>
-                                                                <Label text="Value" GridPane.columnIndex="2" />
-                                                                <TextField fx:id="tableTemplate" GridPane.rowIndex="1" />
-                                                                <TextField fx:id="keyTemplate" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                                                <TextField fx:id="valueTemplate" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                                                                <Button text="Add" onAction="#buttonAddAction" id="buttonAdd" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                                                            </children>
-                                                        </GridPane>
-                                                        <VBox fx:id="editContent" />
-                                                        <FlowPane>
-                                                            <VBox.margin>
-                                                                <Insets left="154.0" />
-                                                            </VBox.margin>
-                                                            <Button text="Update" fx:id="buttonUpdate" onAction="#buttonUpdateAction" disable="true"/>
-                                                        </FlowPane>
-                                                    </VBox>
-                                            </Group>
-                                        </FlowPane>
-                                </ScrollPane>
-                                <ProgressIndicator fx:id="progress" visible="false" />
-                            </StackPane>
-                        </center>
-                    </BorderPane>
-                </Tab>
-                <Tab text="Formating Card" />
-            </tabs>
+            <Tab text="Manual">
+                <BorderPane>
+                    <center>
+                        <StackPane>
+                            <ScrollPane fitToHeight="true" fitToWidth="true" fx:id="manualPanel">
+                                <FlowPane alignment="TOP_CENTER">
+                                    <padding>
+                                        <Insets top="5.0"/>
+                                    </padding>
+                                    <Group>
+                                        <VBox>
+                                            <GridPane BorderPane.alignment="CENTER" hgap="5" vgap="5">
+                                                <Label text="Table"/>
+                                                <Label text="Key" GridPane.columnIndex="1"/>
+                                                <Label text="Value" GridPane.columnIndex="2"/>
+                                                <TextField fx:id="tableTemplate" GridPane.rowIndex="1"/>
+                                                <TextField fx:id="keyTemplate" GridPane.columnIndex="1"
+                                                           GridPane.rowIndex="1"/>
+                                                <TextField fx:id="valueTemplate" GridPane.columnIndex="2"
+                                                           GridPane.rowIndex="1"/>
+                                                <Button text="Add" onAction="#buttonAddAction" id="buttonAdd"
+                                                        GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                                            </GridPane>
+                                            <VBox fx:id="editContent"/>
+                                            <FlowPane>
+                                                <VBox.margin>
+                                                    <Insets left="154.0"/>
+                                                </VBox.margin>
+                                                <Button text="Update" fx:id="buttonUpdate"
+                                                        onAction="#buttonUpdateAction" disable="true"/>
+                                            </FlowPane>
+                                        </VBox>
+                                    </Group>
+                                </FlowPane>
+                            </ScrollPane>
+                            <ProgressIndicator fx:id="progress" visible="false"/>
+                        </StackPane>
+                    </center>
+                </BorderPane>
+            </Tab>
         </TabPane>
     </center>
 </BorderPane>
