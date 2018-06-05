@@ -28,7 +28,7 @@ public class FieldValueEditor extends FlowPane {
         }
     }
 
-    public FieldValueEditor(String key, String value, VBox mainContent) {
+    FieldValueEditor(String key, String value, VBox mainContent) {
         this();
         keyField.setText(key);
         valueField.setText(value);

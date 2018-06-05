@@ -28,8 +28,7 @@ public class DriverConnection {
     }
 
     public static void prepareStatment(String table) throws SQLException{
-        String sql = "UPDATE " + table + " SET value = ? "
-                + "WHERE key = ?";
+        String sql = String.format("UPDATE %s SET value = ? WHERE key = ?", table);
         allQuery = conn.prepareStatement(sql);
     }
 
