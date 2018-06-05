@@ -8,17 +8,9 @@ public class DriverConnection {
     private static Connection conn;
     private static PreparedStatement allQuery;
 
-    public static void connect(String basePath) {
-        try {
-            // db path
-            String url = "jdbc:sqlite:"+basePath;
-
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public static void connect(String basePath) throws SQLException {
+        String url = "jdbc:sqlite:"+basePath;
+        conn = DriverManager.getConnection(url);
     }
 
     public static Connection getConnection() {

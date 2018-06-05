@@ -83,11 +83,15 @@ public class MainController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database Files", "*.db", "*.sqlite", "*.sqlite3", "*.db3"));
         database = fileChooser.showOpenDialog(menuOpenDatabase.getParentPopup().getScene().getWindow());
         if(database != null) {
-            connectionToDatabase();
+            try {
+                connectionToDatabase();
+            } catch (SQLException e) {
+                errorDialog(e);
+            }
         }
     }
 
-    private void connectionToDatabase() {
+    private void connectionToDatabase() throws SQLException{
         DriverConnection.connect(database.getPath());
         buttonUpdate.setDisable(false);
     }
