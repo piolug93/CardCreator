@@ -28,28 +28,25 @@ public class DriverConnection {
            throw new NullConection();
     }
 
-    public static void update(String table, String key, String value) {
-        String sql = "UPDATE " + table + " SET value = ? "
-                + "WHERE key = ?";
-
-        try {
-            allQuery = conn.prepareStatement(sql);
-
-            //set parameters query
-            allQuery.setString(1, value);
-            allQuery.setString(2, key);
-            allQuery.addBatch();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public static void update(String key, String value) throws SQLException {
+        //set parameters query
+        allQuery.setString(1, value);
+        allQuery.setString(2, key);
+        allQuery.addBatch();
     }
 
-    public static void execute() {
-        try {
-            allQuery.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static void prepareStatment(String table) throws SQLException{
+        String sql = "UPDATE " + table + " SET value = ? "
+                + "WHERE key = ?";
+        allQuery = conn.prepareStatement(sql);
+    }
+
+    public static void execute() throws SQLException {
+        int[] errors = allQuery.executeBatch();
+        for (int error : errors) {
+            if (error == 0) {
+                throw new BatchUpdateException("Bad key, update doesn't executed", errors);
+            }
         }
     }
 }

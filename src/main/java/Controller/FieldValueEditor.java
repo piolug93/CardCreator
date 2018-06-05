@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class FieldValueEditor extends FlowPane {
 
@@ -39,7 +40,15 @@ public class FieldValueEditor extends FlowPane {
         editContent.getChildren().remove(this);
     }
 
-    public void update(String table) {
-        DriverConnection.update(table, keyField.getText(), valueField.getText());
+    public void update() throws SQLException{
+        DriverConnection.update(keyField.getText(), valueField.getText());
+    }
+
+    public TextField getKeyField() {
+        return keyField;
+    }
+
+    public TextField getValueField() {
+        return valueField;
     }
 }

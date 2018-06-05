@@ -3,13 +3,14 @@ package Controller;
 import Model.DriverConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.sql.BatchUpdateException;
+import java.sql.SQLException;
 
 public class MainController {
     @FXML private VBox editContent;
@@ -37,10 +38,19 @@ public class MainController {
 
         if(!isListQueryEmpty()) {
             inProcessing(true);
-            sendAllQueryToBatch();
-            DriverConnection.execute();
-            inProcessing(false);
-            completDialog();
+
+            try {
+                sendAllQueryToBatch();
+                DriverConnection.execute();
+                inProcessing(false);
+                completDialog();
+            } catch (BatchUpdateException exception) {
+                inProcessing(false);
+                errorDialog(exception);
+            } catch (SQLException exception) {
+                inProcessing(false);
+                errorDialog(exception);
+            }
         }
     }
 
@@ -49,6 +59,22 @@ public class MainController {
         doneAlert.setTitle("Update");
         doneAlert.setHeaderText("");
         doneAlert.setContentText("Update has completed");
+        doneAlert.showAndWait();
+    }
+
+    private void errorDialog(SQLException exception) {
+        Alert doneAlert = new Alert(Alert.AlertType.ERROR);
+        doneAlert.setTitle("Error");
+        doneAlert.setHeaderText(exception.getClass().toString());
+        doneAlert.setContentText(exception.getMessage());
+        doneAlert.showAndWait();
+    }
+
+    private void errorDialog(BatchUpdateException exception) {
+        Alert doneAlert = new Alert(Alert.AlertType.ERROR);
+        doneAlert.setTitle("Error");
+        doneAlert.setHeaderText(exception.getMessage());
+        doneAlert.setContentText(getExceptionRows(exception));
         doneAlert.showAndWait();
     }
 
@@ -71,14 +97,29 @@ public class MainController {
         progress.setVisible(inProcessing);
     }
 
-    private void sendAllQueryToBatch() {
+    private void sendAllQueryToBatch() throws SQLException{
+        DriverConnection.prepareStatment(tableTemplate.getText());
         for(Node element : editContent.getChildren()) {
             FieldValueEditor node = (FieldValueEditor) element;
-            node.update(tableTemplate.getText());
+            node.update();
         }
     }
 
     private boolean isListQueryEmpty() {
         return editContent.getChildren().isEmpty();
+    }
+
+    private String getExceptionRows(BatchUpdateException exception) {
+        StringBuilder errors = new StringBuilder();
+        int count = 0;
+        for(int error: exception.getUpdateCounts()){
+            if(error==0) {
+                String key = ((FieldValueEditor)(editContent.getChildren().get(count))).getKeyField().getText();
+                String value = ((FieldValueEditor)(editContent.getChildren().get(count))).getValueField().getText();
+                errors.append("Row in "+key+" doesn't update to: "+value).append(System.getProperty("line.separator"));
+            }
+            count++;
+        }
+        return errors.toString();
     }
 }
