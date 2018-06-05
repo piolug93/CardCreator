@@ -1,6 +1,8 @@
 package Controller;
 
+import Model.Configuration;
 import Model.DriverConnection;
+import Model.YamlDriver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 
@@ -25,12 +28,12 @@ public class MainController {
 
     @FXML
     public void buttonAddAction(ActionEvent e) {
-        editContent.getChildren().add(new FieldValueEditor(keyTemplate.getText(), valueTemplate.getText(), editContent));
+        addUpdateField();
     }
 
     @FXML
     private void openDatabase(ActionEvent e) {
-        openDialogSelectDatabase();
+        openDialogDatabaseConf();
     }
 
     @FXML
@@ -54,6 +57,14 @@ public class MainController {
         }
     }
 
+    private void addUpdateField() {
+        editContent.getChildren().add(new FieldValueEditor(keyTemplate.getText(), valueTemplate.getText(), editContent));
+    }
+
+    private void addUpdateField(String key) {
+        editContent.getChildren().add(new FieldValueEditor(key, "", editContent));
+    }
+
     private void completDialog() {
         Alert doneAlert = new Alert(Alert.AlertType.INFORMATION);
         doneAlert.setTitle("Update");
@@ -62,7 +73,7 @@ public class MainController {
         doneAlert.showAndWait();
     }
 
-    private void errorDialog(SQLException exception) {
+    private void errorDialog(Exception exception) {
         Alert doneAlert = new Alert(Alert.AlertType.ERROR);
         doneAlert.setTitle("Error");
         doneAlert.setHeaderText(exception.getClass().toString());
@@ -78,16 +89,26 @@ public class MainController {
         doneAlert.showAndWait();
     }
 
-    private void openDialogSelectDatabase() {
+    private void openDialogDatabaseConf() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database Files", "*.db", "*.sqlite", "*.sqlite3", "*.db3"));
         database = fileChooser.showOpenDialog(menuOpenDatabase.getParentPopup().getScene().getWindow());
-        if(database != null) {
-            try {
-                connectionToDatabase();
-            } catch (SQLException e) {
-                errorDialog(e);
+        if(database != null) try {
+            connectionToDatabase();
+            loadConfiguration();
+        } catch (SQLException | FileNotFoundException e) {
+            errorDialog(e);
+        }
+    }
+
+    private void loadConfiguration() throws FileNotFoundException {
+        YamlDriver.setConfiguration(database);
+        Configuration conf = YamlDriver.getConfiguration();
+        if(conf != null) {
+            for(String key: conf.getKeys()) {
+                addUpdateField(key);
             }
+            tableTemplate.setText(conf.getTable());
         }
     }
 

@@ -8,24 +8,18 @@ import org.apache.commons.io.FilenameUtils;
 
 public class YamlDriver {
 
-    public static Configuration getConfiguration(File database) throws FileNotFoundException{
-        Yaml yaml = new Yaml();
-        String inResources = getConfURL(database.getName());
-        InputStream in;
+    private static Configuration conf;
 
-        if(inResources != null)
-            in = new FileInputStream(getConfURL(FilenameUtils.getBaseName(database.getName())));
-        else
-            in = new FileInputStream(FilenameUtils.removeExtension(database.getPath())+".yml");
-
-        return yaml.loadAs(in, Configuration.class);
+    public static Configuration getConfiguration() {
+        return conf;
     }
 
-    private static String getConfURL(String name) {
-        URL u = YamlDriver.class.getClassLoader().getResource("configurations/"+name+".yml");
-        if(u != null)
-            return u.getPath();
-        else
-            return null;
+    public static void setConfiguration(File database) throws FileNotFoundException {
+        Yaml yaml = new Yaml();
+        InputStream in;
+
+        in = new FileInputStream("configurations/"+FilenameUtils.removeExtension(database.getName())+".yml");
+
+        conf = yaml.loadAs(in, Configuration.class);
     }
 }
